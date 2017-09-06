@@ -8,6 +8,22 @@ window.onload = function() {
       title: '',
       body: ''
     },
+    beforeMount: function() {
+      var that = this,
+          hostname = window.location.hostname,
+          protocol = window.location.protocol,
+          port = window.location.port,
+          baseURL = [protocol, '//', hostname, ':', port, '/articles.json'].join('');
+
+      var params = {
+        url: baseURL,
+        method: 'GET'
+      };
+
+      $.ajax(params).done(function(response) {
+        console.log(response);
+      });
+    },
     methods: {
       create: function() {
         this.loading = !this.loading;
