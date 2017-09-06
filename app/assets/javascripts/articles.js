@@ -1,4 +1,27 @@
 window.onload = function() {
+  var articlesListViewModel = new Vue({
+    el: '#articles-list',
+    data: {
+      articles: []
+    },
+    beforeMount: function() {
+      var that = this,
+        hostname = window.location.hostname,
+        protocol = window.location.protocol,
+        port = window.location.port,
+        baseURL = [protocol, '//', hostname, ':', port, '/articles.json'].join('');
+
+      var params = {
+        url: baseURL,
+        method: 'GET'
+      };
+
+      $.ajax(params).done(function(response) {
+        that.articles = response.articles;
+      });
+    }
+  });
+
   var vm = new Vue({
     el: '#article-form',
     data: {
@@ -7,22 +30,6 @@ window.onload = function() {
       message: '送信中です',
       title: '',
       body: ''
-    },
-    beforeMount: function() {
-      var that = this,
-          hostname = window.location.hostname,
-          protocol = window.location.protocol,
-          port = window.location.port,
-          baseURL = [protocol, '//', hostname, ':', port, '/articles.json'].join('');
-
-      var params = {
-        url: baseURL,
-        method: 'GET'
-      };
-
-      $.ajax(params).done(function(response) {
-        console.log(response);
-      });
     },
     methods: {
       create: function() {
